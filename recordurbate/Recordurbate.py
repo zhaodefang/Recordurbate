@@ -99,12 +99,12 @@ def check_streamers():
     print('Streamers check:\n')
 
     if len(sys.argv) == 3:
-        print("{} isonline:{}".format(sys.argv[2],isonline(sys.argv[2])))
+        print(sys.argv[2] + " - " + ("online" if isonline(sys.argv[2]) else "offline"))
         return
     
     config = Config.load_config()
     for streamer in config['streamers']:
-       print("{} isonline:{}".format(streamer,isonline(streamer)))
+       print(streamer + " - " + ("online" if isonline(streamer) else "offline"))
 
 
 

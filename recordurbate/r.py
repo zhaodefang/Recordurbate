@@ -4,33 +4,6 @@ import sys
 from daemon import Daemon
 import config as Config
 from bot import Bot
-import requests
-
-def isonline(username):
-    url = "https://chaturbate.com/"+username
-    try:
-        r = requests.get(url)
-        rtext = r.text.encode('utf-8').decode('raw_unicode_escape')
-        #print(rtext)
-        if r.status_code != 200: 
-            #print("! 200")
-            return False
-        if rtext.find("404") != -1: 
-            #print("404")
-            return False
-        if rtext.find('''"room_status": "offline"''') != -1: 
-            #print('''"room_status": "offline"''')
-            return False
-        if rtext.find('''"room_status": "public"''') != -1:
-            #print('''"room_status": "public"''')
-            return True
-
-
-        return False
-    except Exception as e:
-        #print("is_online Exception")
-        return False
-        
 import logging
 def usage():
     print("\nUsage: Recordurbate [add | del] username")
@@ -94,18 +67,17 @@ def list_streamers():
         print('- ' + streamer)
 
 def check_streamers():
-    if len(sys.argv) not in (2, 3): return
-
-    print('Streamers check:\n')
-
-    if len(sys.argv) == 3:
-        print("{} isonline:{}".format(sys.argv[2],isonline(sys.argv[2])))
-        return
-    
+    if not check_num_args(2): return
     config = Config.load_config()
+    print('Streamers in recording eheck:\n')
+    
+    logger = logging.getLogger("Recordurbate")
+    logger.setLevel(logging.DEBUG)
+    bot = Bot(logger)
     for streamer in config['streamers']:
-       print("{} isonline:{}".format(streamer,isonline(streamer)))
-
+        isonine = bot.is_online(streamer)
+        print('- ' + streamer + ' isonline:' + isonine)
+        
 
 
 def import_streamers():
@@ -168,7 +140,7 @@ argument_map = {
     "add": add,
     "del": remove,
     "list": list_streamers,
-    "check": check_streamers,
+    "check":check_streamers,
     "import": import_streamers,
     "export": export_streamers,
     "start": bot, "stop": bot, "restart": bot
@@ -181,5 +153,4 @@ if __name__ == "__main__":
     except SystemExit: # prevents usage showing twice when starting
         pass
     except:
-        print("except")
         usage()

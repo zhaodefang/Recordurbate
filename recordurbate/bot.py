@@ -72,7 +72,7 @@ class Bot:
             rtext = r.text.encode('utf-8').decode('raw_unicode_escape')
             if r.status_code != 200: 
                 return False
-            if rtext.find("404") != -1: 
+            if rtext.find("room_status") == -1: 
                 return False
             if rtext.find('''"room_status": "offline"''') != -1: 
                 return False

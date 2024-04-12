@@ -13,22 +13,22 @@ def isonline(username):
         rtext = r.text.encode('utf-8').decode('raw_unicode_escape')
         #print(rtext)
         if r.status_code != 200: 
-            #print("! 200")
+            print("-------------------------! 200")
             return False
-        if rtext.find("404") != -1: 
-            #print("404")
+        if rtext.find("room_status") == -1: 
+            print("-------------------------no find room_status")
             return False
         if rtext.find('''"room_status": "offline"''') != -1: 
-            #print('''"room_status": "offline"''')
+            print('''-------------------------"room_status": "offline"''')
             return False
         if rtext.find('''"room_status": "public"''') != -1:
-            #print('''"room_status": "public"''')
+            print('''-------------------------"room_status": "public"''')
             return True
 
-
+        print("-------------------------unknow")
         return False
     except Exception as e:
-        #print("is_online Exception")
+        print("-------------------------is_online Exception")
         return False
         
 import logging

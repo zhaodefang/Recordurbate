@@ -1,0 +1,12 @@
+========================================================
+#制作image
+docker build -t recordbate:latest .
+
+#启动container
+docker run -d \
+-e http_proxy=http://192.168.10.13:8888 \
+-e https_proxy=http://192.168.10.13:8888 \
+-v /root/videos_bate/configs:/app/configs \
+-v /root/videos_bate/videos:/app/videos \
+--name=recordbate recordbate:latest
+

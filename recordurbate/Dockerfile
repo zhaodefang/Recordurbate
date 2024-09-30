@@ -21,9 +21,14 @@ COPY . .
 RUN pip3 install --no-cache-dir -r requirements.txt
 
 
-#CMD ["python","Recordurbate.py","start"]
+#CMD ["python","Recordurbate.py","restart"]
 
 # 定义容器启动时执行的命令
-CMD ["tail", "-f", "/dev/null"]
+#CMD ["tail", "-f", "/dev/null"]
 
-
+# 使用多行命令
+CMD sh -c " \
+    echo 'Starting server...'; \
+    echo python Recordurbate.py restart \
+    echo 'Server started.' \
+"

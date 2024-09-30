@@ -8,5 +8,5 @@ docker run -d \
 -e https_proxy=http://192.168.10.13:8888 \
 -v /root/videos_bate/configs:/app/configs \
 -v /root/videos_bate/videos:/app/videos \
---name=recordbate recordbate:latest
+--name=recordbate1.1 recordbate:1.1
 
